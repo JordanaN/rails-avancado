@@ -1,10 +1,14 @@
 class AlbumsController < ApplicationController
+  # selecionando de layout especifico
+  layout "app", except: [:index, :show]
   before_action :set_album, only: [:show, :edit, :update, :destroy]
 
   # GET /albums
   # GET /albums.json
   def index
     @albums = Album.all
+
+    # render layout: 'app' - outra maneira de escolher o layout
   end
 
   # GET /albums/1
@@ -19,6 +23,20 @@ class AlbumsController < ApplicationController
 
   # GET /albums/1/edit
   def edit
+  end
+
+  #GET /search
+  def search
+    render "search"
+  end
+
+  def searchAlbum
+    @album = Album.find_by(title: params[:name])
+
+    respond_to do |format|
+      format.html { redirect_to @album }
+      format.json { render :json => @album }
+    end
   end
 
   # POST /albums
